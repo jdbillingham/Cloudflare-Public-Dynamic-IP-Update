@@ -7,6 +7,10 @@
 
 ## Using dig command (https://en.wikipedia.org/wiki/Dig_(command)) to get current public IP address
 currentIP=$(dig +short myip.opendns.com @resolver1.opendns.com)
+# Above not working, so add second way of getting IP
+if [ -z "$currentIP" ]; then
+    currentIP=$(wget -q -O - http://checkip.dyndns.org|sed s/[^0-9.]//g)
+fi
 if [ $? == 0 ] && [ ${currentIP} ]; then  ## when dig command run without error,
     ## Making substring, only retrieving ip address of this server
     ## https://stackabuse.com/substrings-in-bash/
